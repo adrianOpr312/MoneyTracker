@@ -1,5 +1,7 @@
 package Program.CRUD;
+
 import Program.CRUD.Interfaces.GenericFileRepository;
+
 import java.io.*;
 
 @SuppressWarnings("unchecked")
@@ -9,6 +11,21 @@ public class FileRepository<T> extends Repository<T> implements GenericFileRepos
 
     public FileRepository(String filePath) {
         this.filePath = filePath;
+    }
+
+    public static <T> void saveObject(T object, String filePath) throws IOException {
+        FileOutputStream fos = new FileOutputStream(filePath);
+        ObjectOutputStream oos = new ObjectOutputStream(fos);
+        oos.writeObject(object);
+        oos.close();
+
+    }
+
+    public static <T> T loadObject(String filePath) throws IOException, ClassNotFoundException {
+        FileInputStream fis = new FileInputStream(filePath);
+        ObjectInputStream ois = new ObjectInputStream(fis);
+        return (T) ois.readObject();
+
     }
 
     public void saveToFile() throws IOException {
@@ -32,21 +49,6 @@ public class FileRepository<T> extends Repository<T> implements GenericFileRepos
             entity = (T) ois.readObject();
         }
         ois.close();
-
-    }
-
-    public static <T> void saveObject(T object, String filePath) throws IOException {
-        FileOutputStream fos = new FileOutputStream(filePath);
-        ObjectOutputStream oos = new ObjectOutputStream(fos);
-        oos.writeObject(object);
-        oos.close();
-
-    }
-
-    public static <T> T loadObject(String filePath) throws IOException, ClassNotFoundException {
-        FileInputStream fis = new FileInputStream(filePath);
-        ObjectInputStream ois = new ObjectInputStream(fis);
-        return (T) ois.readObject();
 
     }
 }

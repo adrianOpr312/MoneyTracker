@@ -106,9 +106,20 @@ public class UserService {
         updateCurrentUser();
     }
 
-    static void changeBalance(double amount, boolean add) {
+    static void changeBalance(double amount, boolean add) throws Exception {
         if (add) User.currentUser.addBalance(amount);
+        else if (amount > User.currentUser.getBalance())
+            throw new Exception("You can't remove an amount greater than your balance");
         else User.currentUser.removeBalance(amount);
+        updateCurrentUser();
+    }
+
+    static void changeBalanceWithConversion(double amount, String currency, boolean add) throws Exception {
+        double amountInCurrentCurrency = amount * User.currencies.get(currency) / User.currencies.get(User.currentUser.getCurrency());
+        if (add) User.currentUser.addBalance(amountInCurrentCurrency);
+        else if (amountInCurrentCurrency > User.currentUser.getBalance())
+            throw new Exception("The converted amount to remove can't be greater than your balance");
+        else User.currentUser.removeBalance(amountInCurrentCurrency);
         updateCurrentUser();
     }
 

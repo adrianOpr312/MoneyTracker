@@ -5,6 +5,7 @@ import java.util.Scanner;
 public class UserInterface {
 
     private static final Scanner in = new Scanner(System.in);
+    private static final String currencyChangePrompt = "You have successfully %sd %,.2f %s %s your balance%n";
     private static boolean closed = false;
 
     private static void showDelimiter() {
@@ -40,20 +41,22 @@ public class UserInterface {
         System.out.println("4 -> Change password");
         System.out.println("5 -> Add money to your balance");
         System.out.println("6 -> Remove amount from your balance");
-        System.out.println("7 -> Add a milestone");
-        System.out.println("8 -> Complete a milestone");
-        System.out.println("9 -> Remove a milestone");
-        System.out.println("10 -> Show milestones");
-        System.out.println("11 -> Show completed milestones");
-        System.out.println("12 -> Add a reservation");
-        System.out.println("13 -> Complete a reservation");
-        System.out.println("14 -> Remove a reservation");
-        System.out.println("15 -> Show reservations");
-        System.out.println("16 -> Show completed reservations");
-        System.out.println("17 -> Change the currency (don't convert)");
-        System.out.println("18 -> Change the currency (convert)");
-        System.out.println("19 -> Delete account");
-        System.out.println("20 -> Log out");
+        System.out.println("7 -> Add money to your balance from another currency");
+        System.out.println("8 -> Remove money from your balance from another currency");
+        System.out.println("9 -> Add a milestone");
+        System.out.println("10 -> Complete a milestone");
+        System.out.println("11 -> Remove a milestone");
+        System.out.println("12 -> Show milestones");
+        System.out.println("13 -> Show completed milestones");
+        System.out.println("14 -> Add a reservation");
+        System.out.println("15 -> Complete a reservation");
+        System.out.println("16 -> Remove a reservation");
+        System.out.println("17 -> Show reservations");
+        System.out.println("18 -> Show completed reservations");
+        System.out.println("19 -> Change the currency (don't convert)");
+        System.out.println("20 -> Change the currency (convert)");
+        System.out.println("21 -> Delete account");
+        System.out.println("22 -> Log out");
         System.out.println("0 -> Exit");
         System.out.print("\nYour choice -> ");
         byte choice = Byte.parseByte(in.nextLine().trim());
@@ -63,22 +66,24 @@ public class UserInterface {
             case 2 -> showInformation(true);
             case 3 -> changeUsername();
             case 4 -> changePassword();
-            case 5 -> addBalance();
-            case 6 -> removeBalance();
-            case 7 -> makeMilestone();
-            case 8 -> removeMilestone(true);
-            case 9 -> removeMilestone(false);
-            case 10 -> showMilestones(true);
-            case 11 -> showCompletedMilestones();
-            case 12 -> makeReservation();
-            case 13 -> removeReservation(true);
-            case 14 -> removeReservation(false);
-            case 15 -> showReservations(true);
-            case 16 -> showCompletedReservations();
-            case 17 -> changeCurrency(false);
-            case 18 -> changeCurrency(true);
-            case 19 -> deleteUser();
-            case 20 -> showConnectOptions();
+            case 5 -> changeBalance(true);
+            case 6 -> changeBalance(false);
+            case 7 -> changeBalanceFromOtherCurrency(true);
+            case 8 -> changeBalanceFromOtherCurrency(false);
+            case 9 -> makeMilestone();
+            case 10 -> removeMilestone(true);
+            case 11 -> removeMilestone(false);
+            case 12 -> showMilestones(true);
+            case 13 -> showCompletedMilestones();
+            case 14 -> makeReservation();
+            case 15 -> removeReservation(true);
+            case 16 -> removeReservation(false);
+            case 17 -> showReservations(true);
+            case 18 -> showCompletedReservations();
+            case 19 -> changeCurrency(false);
+            case 20 -> changeCurrency(true);
+            case 21 -> deleteUser();
+            case 22 -> showConnectOptions();
             default -> throw new InvalidChoice();
         }
     }
@@ -207,28 +212,53 @@ public class UserInterface {
         showDelimiter();
     }
 
-    private static void addBalance() throws Exception {
+    private static void changeBalance(boolean add) throws Exception {
         showBalance(false);
-        System.out.print("Enter the amount to add: ");
+        String operation;
+        String process;
+        if (add) {
+            operation = "add";
+            process = "to";
+        } else {
+            operation = "remove";
+            process = "from";
+        }
+        System.out.print("Enter the amount to " + operation + ": ");
         double amount = Double.parseDouble(in.nextLine().replace(',', '.').trim());
         if (amount < 0) throw new Exception("Amounts can't be negative");
-        UserService.changeBalance(amount, true);
+        UserService.changeBalance(amount, add);
         showNotifications();
-        System.out.println("Balanced added successfully");
+        if (add) operation += "e";
+        System.out.printf(currencyChangePrompt, operation, amount, User.currentUser.getCurrency(), process);
         showDelimiter();
     }
 
-    private static void removeBalance() throws Exception {
+    private static void changeBalanceFromOtherCurrency(boolean add) throws Exception {
+        showCurrencies();
+        System.out.print("Enter the name of the currency you want the amount to be in: ");
+        String currency = in.nextLine().trim().toUpperCase();
+        if (!User.currencies.containsKey(currency))
+            throw new Exception("Invalid currency");
         showBalance(false);
-        System.out.print("Enter the amount to remove: ");
+        String operation;
+        String process;
+        if (add) {
+            operation = "add";
+            process = "to";
+        } else {
+            operation = "remove";
+            process = "from";
+        }
+        System.out.print("Enter the amount you want to " + operation + ": ");
         double amount = Double.parseDouble(in.nextLine().replace(',', '.').trim());
-        if (amount > User.currentUser.getBalance())
-            throw new Exception("You can't remove an amount grater than your balance");
-        if (amount < 0) throw new Exception("Amounts can't be negative");
-        UserService.changeBalance(amount, false);
+        if (amount < 0)
+            throw new Exception("The amount can't be negative");
+        UserService.changeBalanceWithConversion(amount, currency, add);
         showNotifications();
-        System.out.print("Balanced removed successfully");
+        if (add) operation += "e";
+        System.out.printf(currencyChangePrompt, operation, amount, currency, process);
         showDelimiter();
+
     }
 
     private static void makeReservation() throws Exception {

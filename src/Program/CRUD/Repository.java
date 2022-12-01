@@ -1,7 +1,10 @@
 package Program.CRUD;
+
 import Program.CRUD.Interfaces.GenericRepository;
+
 import java.util.ArrayList;
 import java.util.List;
+
 public class Repository<T> implements GenericRepository<T> {
 
     protected final List<T> entities = new ArrayList<>();

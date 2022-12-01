@@ -6,6 +6,12 @@
   <component name="ChangeListManager">
     <list default="true" id="262916d7-6943-4c4c-bdb5-6b0bed45ab2f" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/interfacePreviews/LogScreen.png" beforeDir="false" afterPath="$PROJECT_DIR$/interfacePreviews/LogScreen.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/interfacePreviews/UserScreen.png" beforeDir="false" afterPath="$PROJECT_DIR$/interfacePreviews/UserScreen.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Database/UserData.dat" beforeDir="false" afterPath="$PROJECT_DIR$/src/Database/UserData.dat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Program/UserInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Program/UserInterface.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Program/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Program/UserService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -24,16 +30,16 @@
     <option name="showExcludedFiles" value="false" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "last_opened_file_path": "D:/OneDrive/PC/Programming/IntelliJ/MoneyTracker",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.0"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/OneDrive/PC/Programming/IntelliJ/MoneyTracker&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="D:\OneDrive\PC\Programming\IntelliJ\MoneyTracker" />
@@ -52,5 +58,41 @@
       <updated>1669894436918</updated>
     </task>
     <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="48675426-86de-45de-a2cb-5a4cfd837198">
+          <value>
+            <State>
+              <option name="SHOW_ONLY_AFFECTED_CHANGES" value="true" />
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="HEAD" />
+                      </list>
+                    </value>
+                  </entry>
+                  <entry key="structure">
+                    <value>
+                      <list>
+                        <option value="dir:D:/OneDrive/PC/Programming/IntelliJ/MoneyTracker/interfacePreviews" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="OPEN_GENERIC_TABS">
+      <map>
+        <entry key="48675426-86de-45de-a2cb-5a4cfd837198" value="TOOL_WINDOW" />
+      </map>
+    </option>
   </component>
 </project>
