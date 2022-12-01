@@ -15,6 +15,9 @@ class User implements Serializable {
     static User currentUser;
     private final ArrayList<Reservation> reservations = new ArrayList<>();
     private final HashMap<Reservation, String> completedReservations = new HashMap<>();
+    private final ArrayList<Reservation> milestones = new ArrayList<>();
+    private final HashMap<Reservation, String> completedMilestones = new HashMap<>();
+    private final ArrayList<String> notifications = new ArrayList<>();
     private String username;
     private String password;
     private int id;
@@ -90,6 +93,38 @@ class User implements Serializable {
         this.completedReservations.put(reservation, completionDate);
     }
 
+    void addMilestone(Reservation milestone) {
+        this.milestones.add(milestone);
+    }
+
+    void removeMilestone(Reservation milestone) {
+        this.milestones.remove(milestone);
+    }
+
+    void addCompletedMilestone(Reservation milestone, String completionDate) {
+        this.completedMilestones.put(milestone, completionDate);
+    }
+
+    void addNotification(String notification) {
+        this.notifications.add(notification);
+    }
+
+    void removeNotification(String notification) {
+        this.notifications.remove(notification);
+    }
+
+    ArrayList<String> getNotifications() {
+        return this.notifications;
+    }
+
+    ArrayList<Reservation> getMilestones() {
+        return this.milestones;
+    }
+
+    HashMap<Reservation, String> getCompletedMilestones() {
+        return this.completedMilestones;
+    }
+
     int getId() {
         return this.id;
     }
@@ -126,11 +161,6 @@ class User implements Serializable {
         public boolean equals(Object obj) {
             if (!(obj instanceof Reservation)) return false;
             return this.name.equals(((Reservation) obj).name);
-        }
-
-        @Override
-        public String toString() {
-            return String.format("Name: %s\nAmount: %,.2f\nDescription: %s\nCreation date: %s", this.name, this.amount, this.description, this.creationDate);
         }
 
     }

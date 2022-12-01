@@ -5,7 +5,7 @@ public class Main {
         try {
             UserInterface.run();
         }catch(Exception e){
-            System.out.println("Something went wrong");
+            System.out.println("One of the save files corrupted or not found");
         }
     }
 }

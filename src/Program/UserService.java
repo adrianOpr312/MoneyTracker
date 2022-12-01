@@ -57,8 +57,18 @@ public class UserService {
         return formatter.format(ZonedDateTime.now());
     }
 
+    private static String getNotification(String milestoneName) {
+        for (String notification : User.currentUser.getNotifications())
+            if (notification.contains(String.format("\"%s\"", milestoneName))) return notification;
+        return "";
+    }
+
     private static boolean reservationExists(User.Reservation reservation) {
         return User.currentUser.getReservations().contains(reservation);
+    }
+
+    private static boolean milestoneExists(User.Reservation milestone) {
+        return User.currentUser.getMilestones().contains(milestone);
     }
 
     static void saveUsers() throws IOException {
@@ -80,10 +90,9 @@ public class UserService {
         repository.addEntity(newUser);
     }
 
-    static void logIn(String username, String password) throws Exception{
+    static void logIn(String username, String password) throws Exception {
         int index = findByUsernameAndPassword(username, password);
-        if(index == -1)
-            throw new Exception("Invalid username or password");
+        if (index == -1) throw new Exception("Invalid username or password");
         User.currentUser = getUsers().get(index);
     }
 
@@ -106,14 +115,12 @@ public class UserService {
     static void changeCurrency(String newCurrency, boolean convert) {
         if (convert) {
             User.currentUser.setBalance(convertToCurrency(User.currentUser.getBalance(), newCurrency));
-            for (User.Reservation reservation : User.currentUser.getReservations()) {
+            for (User.Reservation reservation : User.currentUser.getReservations())
                 reservation.amount = convertToCurrency(reservation.amount, newCurrency);
-            }
+            for (User.Reservation milestone : User.currentUser.getMilestones())
+                milestone.amount = convertToCurrency(milestone.amount, newCurrency);
         }
         User.currentUser.setCurrency(newCurrency);
-        for (User.Reservation reservation : User.currentUser.getReservations()) {
-            reservation.amount = convertToCurrency(reservation.amount, newCurrency);
-        }
         updateCurrentUser();
     }
 
@@ -126,9 +133,9 @@ public class UserService {
         updateCurrentUser();
     }
 
-    static void addReservation(String name, double amount, String description) throws Exception{
+    static void addReservation(String name, double amount, String description) throws Exception {
         User.Reservation reservation = new User.Reservation(name, amount);
-        if(reservationExists(reservation))
+        if (reservationExists(reservation))
             throw new Exception("The reservation with the name " + name + " already exists");
         reservation.description = description;
         reservation.creationDate = getDate();
@@ -138,14 +145,59 @@ public class UserService {
     }
 
 
-    static void removeReservation(String name, boolean completed) throws Exception{
-        if(!(reservationExists(new User.Reservation(name))))
+    static void removeReservation(String name, boolean completed) throws Exception {
+        if (!(reservationExists(new User.Reservation(name))))
             throw new Exception("The reservation with the name " + name + " doesn't exist");
         User.Reservation reservation = User.currentUser.getReservations().get(User.currentUser.getReservations().indexOf(new User.Reservation(name)));
         if (completed) User.currentUser.addCompletedReservation(reservation, getDate());
         else changeBalance(reservation.amount, true);
         User.currentUser.removeReservation(new User.Reservation(name, 0));
         updateCurrentUser();
+    }
+
+    static void addMilestone(String name, double amount) throws Exception {
+        User.Reservation milestone = new User.Reservation(name, amount);
+        if (milestoneExists(milestone)) throw new Exception("The milestone with the name " + name + " already exists");
+        milestone.description = "No description";
+        milestone.creationDate = getDate();
+        User.currentUser.addMilestone(milestone);
+        updateCurrentUser();
+    }
+
+    static void addMilestone(String name, double amount, String description) throws Exception {
+        User.Reservation milestone = new User.Reservation(name, amount);
+        if (milestoneExists(milestone)) throw new Exception("The milestone with the name " + name + " already exists");
+        milestone.description = description;
+        milestone.creationDate = getDate();
+        User.currentUser.addMilestone(milestone);
+        updateCurrentUser();
+    }
+
+    static double getAmountRequiredToCompleteMilestone(User.Reservation milestone) {
+        return milestone.amount - User.currentUser.getBalance();
+    }
+
+    static void removeMilestone(String name, boolean complete) throws Exception {
+        if (!(milestoneExists(new User.Reservation(name))))
+            throw new Exception("The milestone with the name " + name + " doesn't exist");
+        User.Reservation milestone = User.currentUser.getMilestones().get(User.currentUser.getMilestones().indexOf(new User.Reservation(name)));
+        if (complete) {
+            if (User.currentUser.getBalance() < milestone.amount)
+                throw new Exception("You can't complete this milestone yet");
+            User.currentUser.removeBalance(milestone.amount);
+            User.currentUser.addCompletedMilestone(milestone, getDate());
+        }
+        User.currentUser.removeMilestone(milestone);
+        User.currentUser.removeNotification(getNotification(name));
+        updateCurrentUser();
+    }
+
+    static void updateNotifications() {
+        for (User.Reservation milestone : User.currentUser.getMilestones()) {
+            String notification = "You have enough balance to complete the milestone with the name \"" + milestone.name + "\"";
+            if ((User.currentUser.getBalance() >= milestone.amount) && !User.currentUser.getNotifications().contains(notification))
+                User.currentUser.addNotification(notification);
+        }
     }
 
     static void deleteCurrentUser() {
