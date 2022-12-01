@@ -5,18 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="262916d7-6943-4c4c-bdb5-6b0bed45ab2f" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/out/production/MoneyTracker/Database/UserData.dat" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MoneyTracker/Database/UserData.dat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/MoneyTracker/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MoneyTracker/Main.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/MoneyTracker/Program/User$Reservation.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MoneyTracker/Program/User$Reservation.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/MoneyTracker/Program/User.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MoneyTracker/Program/User.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/MoneyTracker/Program/UserInterface$InvalidChoice.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MoneyTracker/Program/UserInterface$InvalidChoice.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/MoneyTracker/Program/UserInterface.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MoneyTracker/Program/UserInterface.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/MoneyTracker/Program/UserService.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/MoneyTracker/Program/UserService.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Database/UserData.dat" beforeDir="false" afterPath="$PROJECT_DIR$/src/Database/UserData.dat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Program/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Program/User.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Program/UserInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Program/UserInterface.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Program/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Program/UserService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -63,16 +52,5 @@
       <updated>1669894436918</updated>
     </task>
     <servers />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/Program/UserInterface.java</url>
-          <line>314</line>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
 </project>
