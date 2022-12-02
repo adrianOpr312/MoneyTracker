@@ -24,7 +24,7 @@ public class UserService {
     }
 
     private static double convertToCurrency(double amount, String newCurrency) {
-        return amount * User.currencies.get(User.currentUser.getCurrency()) / User.currencies.get(newCurrency);
+        return amount * User.currentUser.getCurrencies().get(User.currentUser.getCurrency()) / User.currentUser.getCurrencies().get(newCurrency);
     }
 
     private static int generateId() {
@@ -73,12 +73,10 @@ public class UserService {
 
     static void saveUsers() throws IOException {
         repository.saveToFile();
-        FileRepository.saveObject(User.saveStatics(), "src/Database/UserStatics.dat");
     }
 
     static void loadUsers() throws IOException, ClassNotFoundException {
         repository.loadFromFile();
-        User.loadStatics(FileRepository.loadObject("src/Database/UserStatics.dat"));
     }
 
     private static List<User> getUsers() {
@@ -117,7 +115,7 @@ public class UserService {
     }
 
     static void changeBalanceWithConversion(double amount, String currency, boolean add) throws Exception {
-        double amountInCurrentCurrency = amount * User.currencies.get(currency) / User.currencies.get(User.currentUser.getCurrency());
+        double amountInCurrentCurrency = amount * User.currentUser.getCurrencies().get(currency) / User.currentUser.getCurrencies().get(User.currentUser.getCurrency());
         if (add) User.currentUser.addBalance(amountInCurrentCurrency);
         else if (amountInCurrentCurrency > User.currentUser.getBalance())
             throw new Exception("The converted amount to remove can't be greater than your balance");

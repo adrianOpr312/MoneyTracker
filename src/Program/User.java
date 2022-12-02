@@ -3,38 +3,26 @@ package Program;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 
 class User implements Serializable {
 
-   static Map<String, Double> currencies = new HashMap<>() {{
-        put("USD", 1.00);
-        put("GBP", 1.23);
-        put("EUR", 1.03);
-        put("RON", 0.21);
-    }};
     static User currentUser;
     private final ArrayList<Reservation> reservations = new ArrayList<>();
     private final HashMap<Reservation, String> completedReservations = new HashMap<>();
     private final ArrayList<Reservation> milestones = new ArrayList<>();
     private final HashMap<Reservation, String> completedMilestones = new HashMap<>();
     private final ArrayList<String> notifications = new ArrayList<>();
+    private final HashMap<String, Double> currencies = new HashMap<>() {{
+        put("USD", 1.00);
+        put("GBP", 1.23);
+        put("EUR", 1.03);
+        put("RON", 0.21);
+    }};
     private String username;
     private String password;
     private int id;
     private double balance = 0;
     private String currency;
-
-    static StaticsStorage saveStatics(){
-        StaticsStorage userStatics = new StaticsStorage();
-        userStatics.currencies = currencies;
-        return userStatics;
-    }
-
-    static void loadStatics(StaticsStorage userStatics){
-        if(userStatics != null)
-            currencies = userStatics.currencies;
-    }
 
     User(String username, String password, String currency) {
         this.username = username;
@@ -83,6 +71,18 @@ class User implements Serializable {
 
     void setCurrency(String currency) {
         this.currency = currency;
+    }
+
+    void addCurrency(String currency, double conversionRate) {
+        this.currencies.put(currency, conversionRate);
+    }
+
+    void removeCurrency(String currency) {
+        this.currencies.remove(currency);
+    }
+
+    HashMap<String, Double> getCurrencies() {
+        return this.currencies;
     }
 
     void addBalance(double value) {
