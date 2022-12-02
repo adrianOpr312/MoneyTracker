@@ -73,10 +73,12 @@ public class UserService {
 
     static void saveUsers() throws IOException {
         repository.saveToFile();
+        FileRepository.saveObject(User.saveStatics(), "src/Database/UserStatics.dat");
     }
 
     static void loadUsers() throws IOException, ClassNotFoundException {
         repository.loadFromFile();
+        User.loadStatics(FileRepository.loadObject("src/Database/UserStatics.dat"));
     }
 
     private static List<User> getUsers() {

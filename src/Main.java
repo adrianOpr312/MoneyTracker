@@ -13,9 +13,9 @@ public class Main {
             String choice = in.nextLine().trim();
             if (!choice.equals("0")) {
                 FileRepository.saveObject(null, "src/Database/UserData.dat");
+                FileRepository.saveObject(null, "src/Database/UserStatics.dat");
                 UserInterface.run();
             }
-
         }
     }
 }

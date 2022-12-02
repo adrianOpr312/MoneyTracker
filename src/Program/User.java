@@ -7,8 +7,9 @@ import java.util.Map;
 
 class User implements Serializable {
 
-    static final Map<String, Double> currencies = new HashMap<>() {{
+   static Map<String, Double> currencies = new HashMap<>() {{
         put("USD", 1.00);
+        put("GBP", 1.23);
         put("EUR", 1.03);
         put("RON", 0.21);
     }};
@@ -23,6 +24,17 @@ class User implements Serializable {
     private int id;
     private double balance = 0;
     private String currency;
+
+    static StaticsStorage saveStatics(){
+        StaticsStorage userStatics = new StaticsStorage();
+        userStatics.currencies = currencies;
+        return userStatics;
+    }
+
+    static void loadStatics(StaticsStorage userStatics){
+        if(userStatics != null)
+            currencies = userStatics.currencies;
+    }
 
     User(String username, String password, String currency) {
         this.username = username;
