@@ -5,10 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="262916d7-6943-4c4c-bdb5-6b0bed45ab2f" name="Changes" comment="Changed readme aspect">
-      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Program/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Program/User.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Program/UserInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Program/UserInterface.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Program/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Program/UserService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/interfacePreviews/UserScreen.png" beforeDir="false" afterPath="$PROJECT_DIR$/interfacePreviews/UserScreen.png" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
