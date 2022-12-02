@@ -63,11 +63,11 @@ public class UserService {
         return "";
     }
 
-    private static boolean reservationExists(User.Reservation reservation) {
+    private static boolean reservationExists(User.Allocation reservation) {
         return User.currentUser.getReservations().contains(reservation);
     }
 
-    private static boolean milestoneExists(User.Reservation milestone) {
+    private static boolean milestoneExists(User.Allocation milestone) {
         return User.currentUser.getMilestones().contains(milestone);
     }
 
@@ -126,9 +126,9 @@ public class UserService {
     static void changeCurrency(String newCurrency, boolean convert) {
         if (convert) {
             User.currentUser.setBalance(convertToCurrency(User.currentUser.getBalance(), newCurrency));
-            for (User.Reservation reservation : User.currentUser.getReservations())
+            for (User.Allocation reservation : User.currentUser.getReservations())
                 reservation.amount = convertToCurrency(reservation.amount, newCurrency);
-            for (User.Reservation milestone : User.currentUser.getMilestones())
+            for (User.Allocation milestone : User.currentUser.getMilestones())
                 milestone.amount = convertToCurrency(milestone.amount, newCurrency);
         }
         User.currentUser.setCurrency(newCurrency);
@@ -136,7 +136,7 @@ public class UserService {
     }
 
     static void addReservation(String name, double amount) {
-        User.Reservation reservation = new User.Reservation(name, amount);
+        User.Allocation reservation = new User.Allocation(name, amount);
         reservation.description = "No description";
         reservation.creationDate = getDate();
         User.currentUser.addReservation(reservation);
@@ -145,7 +145,7 @@ public class UserService {
     }
 
     static void addReservation(String name, double amount, String description) throws Exception {
-        User.Reservation reservation = new User.Reservation(name, amount);
+        User.Allocation reservation = new User.Allocation(name, amount);
         if (reservationExists(reservation))
             throw new Exception("The reservation with the name " + name + " already exists");
         reservation.description = description;
@@ -157,17 +157,17 @@ public class UserService {
 
 
     static void removeReservation(String name, boolean completed) throws Exception {
-        if (!(reservationExists(new User.Reservation(name))))
+        if (!(reservationExists(new User.Allocation(name))))
             throw new Exception("The reservation with the name " + name + " doesn't exist");
-        User.Reservation reservation = User.currentUser.getReservations().get(User.currentUser.getReservations().indexOf(new User.Reservation(name)));
+        User.Allocation reservation = User.currentUser.getReservations().get(User.currentUser.getReservations().indexOf(new User.Allocation(name)));
         if (completed) User.currentUser.addCompletedReservation(reservation, getDate());
         else changeBalance(reservation.amount, true);
-        User.currentUser.removeReservation(new User.Reservation(name, 0));
+        User.currentUser.removeReservation(new User.Allocation(name, 0));
         updateCurrentUser();
     }
 
     static void addMilestone(String name, double amount) throws Exception {
-        User.Reservation milestone = new User.Reservation(name, amount);
+        User.Allocation milestone = new User.Allocation(name, amount);
         if (milestoneExists(milestone)) throw new Exception("The milestone with the name " + name + " already exists");
         milestone.description = "No description";
         milestone.creationDate = getDate();
@@ -176,7 +176,7 @@ public class UserService {
     }
 
     static void addMilestone(String name, double amount, String description) throws Exception {
-        User.Reservation milestone = new User.Reservation(name, amount);
+        User.Allocation milestone = new User.Allocation(name, amount);
         if (milestoneExists(milestone)) throw new Exception("The milestone with the name " + name + " already exists");
         milestone.description = description;
         milestone.creationDate = getDate();
@@ -184,14 +184,14 @@ public class UserService {
         updateCurrentUser();
     }
 
-    static double getAmountRequiredToCompleteMilestone(User.Reservation milestone) {
+    static double getAmountRequiredToCompleteMilestone(User.Allocation milestone) {
         return milestone.amount - User.currentUser.getBalance();
     }
 
     static void removeMilestone(String name, boolean complete) throws Exception {
-        if (!(milestoneExists(new User.Reservation(name))))
+        if (!(milestoneExists(new User.Allocation(name))))
             throw new Exception("The milestone with the name " + name + " doesn't exist");
-        User.Reservation milestone = User.currentUser.getMilestones().get(User.currentUser.getMilestones().indexOf(new User.Reservation(name)));
+        User.Allocation milestone = User.currentUser.getMilestones().get(User.currentUser.getMilestones().indexOf(new User.Allocation(name)));
         if (complete) {
             if (User.currentUser.getBalance() < milestone.amount)
                 throw new Exception("You can't complete this milestone yet");
@@ -204,7 +204,7 @@ public class UserService {
     }
 
     static void updateNotifications() {
-        for (User.Reservation milestone : User.currentUser.getMilestones()) {
+        for (User.Allocation milestone : User.currentUser.getMilestones()) {
             String notification = "You have enough balance to complete the milestone with the name \"" + milestone.name + "\"";
             if ((User.currentUser.getBalance() >= milestone.amount) && !User.currentUser.getNotifications().contains(notification))
                 User.currentUser.addNotification(notification);

@@ -7,10 +7,10 @@ import java.util.HashMap;
 class User implements Serializable {
 
     static User currentUser;
-    private final ArrayList<Reservation> reservations = new ArrayList<>();
-    private final HashMap<Reservation, String> completedReservations = new HashMap<>();
-    private final ArrayList<Reservation> milestones = new ArrayList<>();
-    private final HashMap<Reservation, String> completedMilestones = new HashMap<>();
+    private final ArrayList<Allocation> reservations = new ArrayList<>();
+    private final HashMap<Allocation, String> completedReservations = new HashMap<>();
+    private final ArrayList<Allocation> milestones = new ArrayList<>();
+    private final HashMap<Allocation, String> completedMilestones = new HashMap<>();
     private final ArrayList<String> notifications = new ArrayList<>();
     private final HashMap<String, Double> currencies = new HashMap<>() {{
         put("USD", 1.00);
@@ -93,27 +93,27 @@ class User implements Serializable {
         this.balance -= value;
     }
 
-    void addReservation(Reservation reservation) {
+    void addReservation(Allocation reservation) {
         this.reservations.add(reservation);
     }
 
-    void removeReservation(Reservation reservation) {
+    void removeReservation(Allocation reservation) {
         this.reservations.remove(reservation);
     }
 
-    void addCompletedReservation(Reservation reservation, String completionDate) {
+    void addCompletedReservation(Allocation reservation, String completionDate) {
         this.completedReservations.put(reservation, completionDate);
     }
 
-    void addMilestone(Reservation milestone) {
+    void addMilestone(Allocation milestone) {
         this.milestones.add(milestone);
     }
 
-    void removeMilestone(Reservation milestone) {
+    void removeMilestone(Allocation milestone) {
         this.milestones.remove(milestone);
     }
 
-    void addCompletedMilestone(Reservation milestone, String completionDate) {
+    void addCompletedMilestone(Allocation milestone, String completionDate) {
         this.completedMilestones.put(milestone, completionDate);
     }
 
@@ -129,11 +129,11 @@ class User implements Serializable {
         return this.notifications;
     }
 
-    ArrayList<Reservation> getMilestones() {
+    ArrayList<Allocation> getMilestones() {
         return this.milestones;
     }
 
-    HashMap<Reservation, String> getCompletedMilestones() {
+    HashMap<Allocation, String> getCompletedMilestones() {
         return this.completedMilestones;
     }
 
@@ -145,34 +145,34 @@ class User implements Serializable {
         this.id = id;
     }
 
-    ArrayList<Reservation> getReservations() {
+    ArrayList<Allocation> getReservations() {
         return this.reservations;
     }
 
-    HashMap<Reservation, String> getCompletedReservations() {
+    HashMap<Allocation, String> getCompletedReservations() {
         return this.completedReservations;
     }
 
 
-    static class Reservation {
+    static class Allocation {
         String name;
         double amount;
         String description;
         String creationDate;
 
-        Reservation(String name) {
+        Allocation(String name) {
             this.name = name;
         }
 
-        Reservation(String name, double amount) {
+        Allocation(String name, double amount) {
             this.name = name;
             this.amount = amount;
         }
 
         @Override
         public boolean equals(Object obj) {
-            if (!(obj instanceof Reservation)) return false;
-            return this.name.equals(((Reservation) obj).name);
+            if (!(obj instanceof Allocation)) return false;
+            return this.name.equals(((Allocation) obj).name);
         }
 
     }

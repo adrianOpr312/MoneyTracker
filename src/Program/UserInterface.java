@@ -132,7 +132,7 @@ public class UserInterface {
         if (User.currentUser.getReservations().isEmpty()) throw new Exception("You have no reservations");
         if (notifications) showNotifications();
         else showDelimiter();
-        for (User.Reservation reservation : User.currentUser.getReservations()) {
+        for (User.Allocation reservation : User.currentUser.getReservations()) {
             System.out.printf("Name: %s\nAmount: %,.2f %s\nDescription: %s\nCreation date: %s%n", reservation.name, reservation.amount, User.currentUser.getCurrency(), reservation.description, reservation.creationDate);
             if (User.currentUser.getReservations().indexOf(reservation) != User.currentUser.getReservations().size() - 1)
                 System.out.println();
@@ -144,7 +144,7 @@ public class UserInterface {
         if (User.currentUser.getCompletedReservations().isEmpty())
             throw new Exception("You have no completed reservations");
         showDelimiter();
-        for (User.Reservation reservation : User.currentUser.getCompletedReservations().keySet()) {
+        for (User.Allocation reservation : User.currentUser.getCompletedReservations().keySet()) {
             System.out.printf("Name: %s\nAmount: %,.2f %s\nDescription: %s\nCreation date: %s\nCompletion date: %s%n", reservation.name, reservation.amount, User.currentUser.getCurrency(), reservation.description, reservation.creationDate, User.currentUser.getCompletedReservations().get(reservation));
             if (User.currentUser.getReservations().indexOf(reservation) != User.currentUser.getReservations().size() - 1)
                 System.out.println();
@@ -156,7 +156,7 @@ public class UserInterface {
         if (User.currentUser.getMilestones().isEmpty()) throw new Exception("You have no milestones");
         if (notifications) showNotifications();
         else showDelimiter();
-        for (User.Reservation milestone : User.currentUser.getMilestones()) {
+        for (User.Allocation milestone : User.currentUser.getMilestones()) {
             double requiredAmount = UserService.getAmountRequiredToCompleteMilestone(milestone);
             if (requiredAmount > 0)
                 System.out.printf("Name: %s\nAmount: %,.2f %s (%,.2f %s required to complete)\nDescription: %s\nCreation date: %s%n", milestone.name, milestone.amount, User.currentUser.getCurrency(), requiredAmount, User.currentUser.getCurrency(), milestone.description, milestone.creationDate);
@@ -173,7 +173,7 @@ public class UserInterface {
             throw new Exception("You have no completed milestones");
         showDelimiter();
         int index = 0;
-        for (User.Reservation milestone : User.currentUser.getCompletedMilestones().keySet()) {
+        for (User.Allocation milestone : User.currentUser.getCompletedMilestones().keySet()) {
             System.out.printf("Name: %s\nAmount: %,.2f %s\nDescription: %s\nCreation date: %s\nCompletion date: %s%n", milestone.name, milestone.amount, User.currentUser.getCurrency(), milestone.description, milestone.creationDate, User.currentUser.getCompletedMilestones().get(milestone));
             if (index != User.currentUser.getCompletedMilestones().keySet().size() - 1) System.out.println();
             index++;
@@ -294,7 +294,7 @@ public class UserInterface {
         } else if (choice == 0) UserService.addReservation(name, amount);
         else throw new InvalidChoice();
         showNotifications();
-        System.out.println("Reservation added successfully");
+        System.out.println("Allocation added successfully");
         showDelimiter();
 
     }
