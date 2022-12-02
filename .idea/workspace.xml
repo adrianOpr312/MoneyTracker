@@ -4,9 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="262916d7-6943-4c4c-bdb5-6b0bed45ab2f" name="Changes" comment="Changed readme aspect">
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/interfacePreviews/UserScreen.png" beforeDir="false" afterPath="$PROJECT_DIR$/interfacePreviews/UserScreen.png" afterDir="false" />
+    <list default="true" id="262916d7-6943-4c4c-bdb5-6b0bed45ab2f" name="Changes" comment="Updated README.md">
+      <change beforePath="$PROJECT_DIR$/interfacePreviews/UserScreen.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Program/StaticsStorage.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Program/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Program/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Program/UserInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Program/UserInterface.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Program/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Program/UserService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -74,7 +78,14 @@
       <option name="project" value="LOCAL" />
       <updated>1669929488874</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Updated README.md">
+      <created>1669992817360</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1669992817360</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -115,6 +126,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Changed readme aspect" />
-    <option name="LAST_COMMIT_MESSAGE" value="Changed readme aspect" />
+    <MESSAGE value="Updated README.md" />
+    <option name="LAST_COMMIT_MESSAGE" value="Updated README.md" />
   </component>
 </project>
