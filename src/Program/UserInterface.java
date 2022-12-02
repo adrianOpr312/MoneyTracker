@@ -20,9 +20,42 @@ public class UserInterface {
         showDelimiter();
     }
 
+    private static void runConnectMenu(){
+        while(!closed){
+            try {
+                showConnectOptions();
+                break;
+            } catch (NumberFormatException e) {
+                showDelimiter();
+                System.out.println("Invalid number");
+            } catch (Exception e) {
+                showDelimiter();
+                System.out.println(e.getMessage());
+            }
+        }
+    }
+
+    public static void runUserMenu() throws Exception{
+        while(!closed){
+            try {
+                showDelimiter();
+                showUserMenu();
+                UserService.updateNotifications();
+            } catch (NumberFormatException e) {
+                showNotifications();
+                System.out.println("Invalid number");
+            } catch (Exception e) {
+                showNotifications();
+                System.out.println(e.getMessage());
+            }
+        }
+        UserService.updateCurrentUser();
+        UserService.saveUsers();
+    }
+
     private static void showConnectOptions() throws Exception {
-        showDelimiter();
         byte choice;
+        showDelimiter();
         System.out.println("1 -> Log in");
         System.out.println("2 -> Sign in");
         System.out.println("0 -> Exit");
@@ -90,24 +123,21 @@ public class UserInterface {
             case 21 -> addCurrency();
             case 22 -> removeCurrency();
             case 23 -> deleteUser();
-            case 24 -> showConnectOptions();
+            case 24 -> logOut();
             default -> throw new InvalidChoice();
         }
     }
-
 
     private static void showBalance(boolean notifications) {
         if (notifications) showNotifications();
         else showDelimiter();
         System.out.printf("Your balance is %,.2f %s%n", User.currentUser.getBalance(), User.currentUser.getCurrency());
-        showDelimiter();
     }
 
     private static void showInformation(boolean notifications) {
         if (notifications) showNotifications();
         else showDelimiter();
         System.out.println(User.currentUser);
-        showDelimiter();
     }
 
     private static void showCurrencies(String... args) {
@@ -139,7 +169,6 @@ public class UserInterface {
             if (User.currentUser.getReservations().indexOf(reservation) != User.currentUser.getReservations().size() - 1)
                 System.out.println();
         }
-        showDelimiter();
     }
 
     private static void showCompletedReservations() throws Exception {
@@ -151,7 +180,6 @@ public class UserInterface {
             if (User.currentUser.getReservations().indexOf(reservation) != User.currentUser.getReservations().size() - 1)
                 System.out.println();
         }
-        showDelimiter();
     }
 
     private static void showMilestones(boolean notifications) throws Exception {
@@ -167,7 +195,6 @@ public class UserInterface {
             if (User.currentUser.getMilestones().indexOf(milestone) != User.currentUser.getMilestones().size() - 1)
                 System.out.println();
         }
-        showDelimiter();
     }
 
     private static void showCompletedMilestones() throws Exception {
@@ -181,7 +208,6 @@ public class UserInterface {
             if (index != User.currentUser.getCompletedMilestones().keySet().size() - 1) System.out.println();
             index++;
         }
-        showDelimiter();
     }
 
 
@@ -194,7 +220,6 @@ public class UserInterface {
         UserService.logIn(username, password);
         showDelimiter();
         System.out.println("Logged in successfully");
-        showDelimiter();
     }
 
     private static void signIn() throws Exception {
@@ -214,7 +239,6 @@ public class UserInterface {
         UserService.signIn(username, password, currency);
         showDelimiter();
         System.out.println("Signed in successfully, you are now logged in");
-        showDelimiter();
     }
 
     private static void changeUsername() {
@@ -225,7 +249,6 @@ public class UserInterface {
         UserService.changeUsername(newUsername);
         showNotifications();
         System.out.println("Username changed successfully");
-        showDelimiter();
     }
 
     private static void changePassword() {
@@ -236,7 +259,6 @@ public class UserInterface {
         UserService.changePassword(newPassword);
         showNotifications();
         System.out.println("Password changed successfully");
-        showDelimiter();
     }
 
     private static void changeBalance(boolean add) throws Exception {
@@ -258,7 +280,6 @@ public class UserInterface {
         showNotifications();
         if (add) operation += "e";
         System.out.printf(currencyChangePrompt, operation, amount, User.currentUser.getCurrency(), process);
-        showDelimiter();
     }
 
     private static void changeBalanceFromOtherCurrency(boolean add) throws Exception {
@@ -285,8 +306,6 @@ public class UserInterface {
         showNotifications();
         if (add) operation += "e";
         System.out.printf(currencyChangePrompt, operation, amount, currency, process);
-        showDelimiter();
-
     }
 
     private static void makeReservation() throws Exception {
@@ -311,8 +330,6 @@ public class UserInterface {
         else throw new InvalidChoice();
         showNotifications();
         System.out.println("Allocation added successfully");
-        showDelimiter();
-
     }
 
     private static void removeReservation(boolean complete) throws Exception {
@@ -325,7 +342,6 @@ public class UserInterface {
         showNotifications();
         if (complete) System.out.printf(prompt, "completed");
         else System.out.printf(prompt, "removed");
-        showDelimiter();
     }
 
     private static void changeCurrency(boolean convert) throws Exception {
@@ -338,8 +354,6 @@ public class UserInterface {
         UserService.changeCurrency(currency, convert);
         showNotifications();
         System.out.println("Currency changed successfully");
-        showDelimiter();
-
     }
 
     private static void addCurrency() throws Exception {
@@ -354,7 +368,6 @@ public class UserInterface {
         User.currentUser.addCurrency(currency, conversionRate);
         showNotifications();
         System.out.println("Currency added successfully");
-        showDelimiter();
     }
 
     private static void removeCurrency() throws Exception {
@@ -390,7 +403,6 @@ public class UserInterface {
         User.currentUser.removeCurrency(currency);
         showNotifications();
         System.out.println("The currency \"" + currency + "\" has been removed successfully");
-        showDelimiter();
     }
 
     private static void makeMilestone() throws Exception {
@@ -413,7 +425,6 @@ public class UserInterface {
         else throw new InvalidChoice();
         showNotifications();
         System.out.println("Successfully added milestone");
-        showDelimiter();
     }
 
     private static void removeMilestone(boolean complete) throws Exception {
@@ -426,55 +437,30 @@ public class UserInterface {
         showNotifications();
         if (complete) System.out.printf(prompt, "completed");
         else System.out.printf(prompt, "removed");
-        showDelimiter();
     }
 
     private static void deleteUser() throws Exception {
         int id;
         showInformation(false);
-        System.out.print("Enter your id to confirm: ");
+        System.out.print("\nEnter your id to confirm: ");
         id = Integer.parseInt(in.nextLine().replace('#', ' ').trim());
         if (id != User.currentUser.getId()) throw new Exception("Invalid id");
         UserService.deleteCurrentUser();
         showDelimiter();
         System.out.println("User deleted successfully");
-        showConnectOptions();
+        runConnectMenu();
+    }
+
+    private static void logOut(){
+        UserService.updateCurrentUser();
+        runConnectMenu();
     }
 
     public static void run() throws Exception {
         UserService.loadUsers();
-        while (true) {
-            try {
-                showConnectOptions();
-                if (closed) {
-                    UserService.saveUsers();
-                    return;
-                }
-                break;
-            } catch (Exception e) {
-                showDelimiter();
-                System.out.println(e.getMessage());
-            }
-        }
-
-        while (true) {
-            try {
-                showUserMenu();
-                UserService.updateNotifications();
-                if (closed) {
-                    UserService.saveUsers();
-                    break;
-                }
-            } catch (NumberFormatException e) {
-                showNotifications();
-                System.out.println("Invalid number");
-                showDelimiter();
-            } catch (Exception e) {
-                showNotifications();
-                System.out.println(e.getMessage());
-                showDelimiter();
-            }
-        }
+        showConnectOptions();
+        if(!closed)
+            runUserMenu();
     }
 
     private static class InvalidChoice extends Exception {

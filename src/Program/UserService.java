@@ -12,7 +12,7 @@ public class UserService {
 
     public static final FileRepository<User> repository = new FileRepository<>("src/Database/UserData.dat");
 
-    private static void updateCurrentUser() {
+    static void updateCurrentUser() {
         repository.updateEntity(repository.findEntity(User.currentUser), User.currentUser);
     }
 
@@ -98,12 +98,10 @@ public class UserService {
 
     static void changeUsername(String newUsername) {
         User.currentUser.setUsername(newUsername);
-        updateCurrentUser();
     }
 
     static void changePassword(String newPassword) {
         User.currentUser.setPassword(newPassword);
-        updateCurrentUser();
     }
 
     static void changeBalance(double amount, boolean add) throws Exception {
@@ -111,7 +109,6 @@ public class UserService {
         else if (amount > User.currentUser.getBalance())
             throw new Exception("You can't remove an amount greater than your balance");
         else User.currentUser.removeBalance(amount);
-        updateCurrentUser();
     }
 
     static void changeBalanceWithConversion(double amount, String currency, boolean add) throws Exception {
@@ -120,7 +117,6 @@ public class UserService {
         else if (amountInCurrentCurrency > User.currentUser.getBalance())
             throw new Exception("The converted amount to remove can't be greater than your balance");
         else User.currentUser.removeBalance(amountInCurrentCurrency);
-        updateCurrentUser();
     }
 
     static void changeCurrency(String newCurrency, boolean convert) {
@@ -132,7 +128,6 @@ public class UserService {
                 milestone.amount = convertToCurrency(milestone.amount, newCurrency);
         }
         User.currentUser.setCurrency(newCurrency);
-        updateCurrentUser();
     }
 
     static void addReservation(String name, double amount) {
@@ -141,7 +136,6 @@ public class UserService {
         reservation.creationDate = getDate();
         User.currentUser.addReservation(reservation);
         User.currentUser.removeBalance(amount);
-        updateCurrentUser();
     }
 
     static void addReservation(String name, double amount, String description) throws Exception {
@@ -152,7 +146,6 @@ public class UserService {
         reservation.creationDate = getDate();
         User.currentUser.addReservation(reservation);
         User.currentUser.removeBalance(amount);
-        updateCurrentUser();
     }
 
 
@@ -163,7 +156,6 @@ public class UserService {
         if (complete) User.currentUser.addCompletedReservation(reservation, getDate());
         else changeBalance(reservation.amount, true);
         User.currentUser.removeReservation(reservation);
-        updateCurrentUser();
     }
 
     static void addMilestone(String name, double amount) throws Exception {
@@ -172,7 +164,6 @@ public class UserService {
         milestone.description = "No description";
         milestone.creationDate = getDate();
         User.currentUser.addMilestone(milestone);
-        updateCurrentUser();
     }
 
     static void addMilestone(String name, double amount, String description) throws Exception {
@@ -181,7 +172,6 @@ public class UserService {
         milestone.description = description;
         milestone.creationDate = getDate();
         User.currentUser.addMilestone(milestone);
-        updateCurrentUser();
     }
 
     static double getAmountRequiredToCompleteMilestone(User.Allocation milestone) {
@@ -199,7 +189,6 @@ public class UserService {
         }
         User.currentUser.removeMilestone(milestone);
         User.currentUser.removeNotification(getNotification(name));
-        updateCurrentUser();
     }
 
     static void updateNotifications() {
@@ -213,6 +202,5 @@ public class UserService {
     static void deleteCurrentUser() {
         repository.deleteEntity(repository.getEntities().indexOf(User.currentUser));
     }
-
 
 }

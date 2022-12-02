@@ -4,7 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="262916d7-6943-4c4c-bdb5-6b0bed45ab2f" name="Changes" comment="Deleted" />
+    <list default="true" id="262916d7-6943-4c4c-bdb5-6b0bed45ab2f" name="Changes" comment="Made code prettier">
+      <change beforePath="$PROJECT_DIR$/src/Program/UserInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Program/UserInterface.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Program/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Program/UserService.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -19,6 +22,11 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="jar://C:/Program Files/Java/jdk-19/lib/src.zip!/java.base/java/util/ArrayList.java" root0="SKIP_INSPECTION" />
+    <setting file="jar://C:/Program Files/Java/jdk-19/lib/src.zip!/java.base/java/util/LinkedList.java" root0="SKIP_INSPECTION" />
+    <setting file="jar://C:/Program Files/Java/jdk-19/lib/src.zip!/java.base/java/util/List.java" root0="SKIP_INSPECTION" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -39,7 +47,8 @@
     &quot;last_opened_file_path&quot;: &quot;D:/OneDrive/PC/Programming/IntelliJ/MoneyTracker&quot;,
     &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
     &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;Errors&quot;
   },
   &quot;keyToStringList&quot;: {
     &quot;com.intellij.ide.scratch.ScratchImplUtil$2/New Scratch File&quot;: [
@@ -85,7 +94,21 @@
       <option name="project" value="LOCAL" />
       <updated>1669995700558</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Changed class name from &quot;Reservations&quot; to &quot;Allocations&quot;">
+      <created>1669998702210</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1669998702210</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Made code prettier">
+      <created>1670000431299</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1670000431299</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -128,6 +151,8 @@
     <MESSAGE value="Changed readme aspect" />
     <MESSAGE value="Updated README.md" />
     <MESSAGE value="Made some changes and solved some bugs" />
-    <option name="LAST_COMMIT_MESSAGE" value="Made some changes and solved some bugs" />
+    <MESSAGE value="Changed class name from &quot;Reservations&quot; to &quot;Allocations&quot;" />
+    <MESSAGE value="Made code prettier" />
+    <option name="LAST_COMMIT_MESSAGE" value="Made code prettier" />
   </component>
 </project>
