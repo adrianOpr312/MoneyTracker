@@ -156,13 +156,13 @@ public class UserService {
     }
 
 
-    static void removeReservation(String name, boolean completed) throws Exception {
-        if (!(reservationExists(new User.Allocation(name))))
-            throw new Exception("The reservation with the name " + name + " doesn't exist");
+    static void removeReservation(String name, boolean complete) throws Exception {
         User.Allocation reservation = User.currentUser.getReservations().get(User.currentUser.getReservations().indexOf(new User.Allocation(name)));
-        if (completed) User.currentUser.addCompletedReservation(reservation, getDate());
+        if (!reservationExists(reservation))
+            throw new Exception("The reservation with the name " + name + " doesn't exist");
+        if (complete) User.currentUser.addCompletedReservation(reservation, getDate());
         else changeBalance(reservation.amount, true);
-        User.currentUser.removeReservation(new User.Allocation(name, 0));
+        User.currentUser.removeReservation(reservation);
         updateCurrentUser();
     }
 
@@ -189,9 +189,8 @@ public class UserService {
     }
 
     static void removeMilestone(String name, boolean complete) throws Exception {
-        if (!(milestoneExists(new User.Allocation(name))))
-            throw new Exception("The milestone with the name " + name + " doesn't exist");
         User.Allocation milestone = User.currentUser.getMilestones().get(User.currentUser.getMilestones().indexOf(new User.Allocation(name)));
+        if (!milestoneExists(milestone)) throw new Exception("The milestone with the name " + name + " doesn't exist");
         if (complete) {
             if (User.currentUser.getBalance() < milestone.amount)
                 throw new Exception("You can't complete this milestone yet");
@@ -206,7 +205,7 @@ public class UserService {
     static void updateNotifications() {
         for (User.Allocation milestone : User.currentUser.getMilestones()) {
             String notification = "You have enough balance to complete the milestone with the name \"" + milestone.name + "\"";
-            if ((User.currentUser.getBalance() >= milestone.amount) && !User.currentUser.getNotifications().contains(notification))
+            if (User.currentUser.getBalance() >= milestone.amount && !User.currentUser.getNotifications().contains(notification))
                 User.currentUser.addNotification(notification);
         }
     }

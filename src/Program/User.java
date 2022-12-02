@@ -32,8 +32,8 @@ class User implements Serializable {
 
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof User user)) return false;
-        return this.id == user.id;
+        if (!(obj instanceof User)) return false;
+        return this.id == ((User) obj).id;
     }
 
     @Override

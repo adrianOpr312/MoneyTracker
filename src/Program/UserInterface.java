@@ -22,11 +22,12 @@ public class UserInterface {
 
     private static void showConnectOptions() throws Exception {
         showDelimiter();
+        byte choice;
         System.out.println("1 -> Log in");
         System.out.println("2 -> Sign in");
         System.out.println("0 -> Exit");
         System.out.print("\nYour choice -> ");
-        byte choice = Byte.parseByte(in.nextLine().trim());
+        choice = Byte.parseByte(in.nextLine().trim());
         switch (choice) {
             case 0 -> closed = true;
             case 1 -> logIn();
@@ -36,6 +37,7 @@ public class UserInterface {
     }
 
     private static void showUserMenu() throws Exception {
+        byte choice;
         System.out.println("1 -> Display Balance");
         System.out.println("2 -> Display your information");
         System.out.println("3 -> Change username");
@@ -62,7 +64,7 @@ public class UserInterface {
         System.out.println("24 -> Log out");
         System.out.println("0 -> Exit");
         System.out.print("\nYour choice -> ");
-        byte choice = Byte.parseByte(in.nextLine().trim());
+        choice = Byte.parseByte(in.nextLine().trim());
         switch (choice) {
             case 0 -> closed = true;
             case 1 -> showBalance(true);
@@ -111,10 +113,10 @@ public class UserInterface {
     private static void showCurrencies(String... args) {
         List<String> ignoredCurrencies = List.of(args);
         showDelimiter();
-        for (String currency : User.currentUser.getCurrencies().keySet()){
-            if(!ignoredCurrencies.contains(currency)) {
+        for (String currency : User.currentUser.getCurrencies().keySet()) {
+            if (!ignoredCurrencies.contains(currency)) {
                 System.out.print(currency);
-                if(!currency.equals("USD"))
+                if (!currency.equals("USD"))
                     System.out.printf(": %,.2f USD", User.currentUser.getCurrencies().get(currency));
                 System.out.println();
             }
@@ -122,7 +124,7 @@ public class UserInterface {
         showDelimiter();
     }
 
-    private static void showBasicCurrencies(){
+    private static void showBasicCurrencies() {
         showDelimiter();
         System.out.println("USD\nGBP: 1.23 USD\nEUR: 1.03 USD\nRON: 0.21 USD");
         showDelimiter();
@@ -169,10 +171,11 @@ public class UserInterface {
     }
 
     private static void showCompletedMilestones() throws Exception {
+        int index;
         if (User.currentUser.getCompletedMilestones().isEmpty())
             throw new Exception("You have no completed milestones");
         showDelimiter();
-        int index = 0;
+        index = 0;
         for (User.Allocation milestone : User.currentUser.getCompletedMilestones().keySet()) {
             System.out.printf("Name: %s\nAmount: %,.2f %s\nDescription: %s\nCreation date: %s\nCompletion date: %s%n", milestone.name, milestone.amount, User.currentUser.getCurrency(), milestone.description, milestone.creationDate, User.currentUser.getCompletedMilestones().get(milestone));
             if (index != User.currentUser.getCompletedMilestones().keySet().size() - 1) System.out.println();
@@ -195,15 +198,19 @@ public class UserInterface {
     }
 
     private static void signIn() throws Exception {
+        String username;
+        String password;
+        String currency;
         showDelimiter();
         System.out.print("Enter an username: ");
-        String username = in.nextLine().trim();
+        username = in.nextLine().trim();
         System.out.print("Enter a  password: ");
-        String password = in.nextLine().trim();
+        password = in.nextLine().trim();
         showBasicCurrencies();
         System.out.print("Enter the name of the currency you want your balance to be in (you can add other ones and change to them later): ");
-        String currency = in.nextLine().trim().toUpperCase();
-        if (!List.of("USD", "GBP", "EUR", "RON").contains(currency)) throw new Exception("That is not a valid currency");
+        currency = in.nextLine().trim().toUpperCase();
+        if (!List.of("USD", "GBP", "EUR", "RON").contains(currency))
+            throw new Exception("That is not a valid currency");
         UserService.signIn(username, password, currency);
         showDelimiter();
         System.out.println("Signed in successfully, you are now logged in");
@@ -211,9 +218,10 @@ public class UserInterface {
     }
 
     private static void changeUsername() {
+        String newUsername;
         showDelimiter();
         System.out.print("Enter a new username: ");
-        String newUsername = in.nextLine().trim();
+        newUsername = in.nextLine().trim();
         UserService.changeUsername(newUsername);
         showNotifications();
         System.out.println("Username changed successfully");
@@ -221,9 +229,10 @@ public class UserInterface {
     }
 
     private static void changePassword() {
+        String newPassword;
         showDelimiter();
         System.out.print("Enter a new password: ");
-        String newPassword = in.nextLine().trim();
+        newPassword = in.nextLine().trim();
         UserService.changePassword(newPassword);
         showNotifications();
         System.out.println("Password changed successfully");
@@ -231,9 +240,9 @@ public class UserInterface {
     }
 
     private static void changeBalance(boolean add) throws Exception {
-        showBalance(false);
         String operation;
         String process;
+        double amount;
         if (add) {
             operation = "add";
             process = "to";
@@ -241,8 +250,9 @@ public class UserInterface {
             operation = "remove";
             process = "from";
         }
+        showBalance(false);
         System.out.print("Enter the amount to " + operation + ": ");
-        double amount = Double.parseDouble(in.nextLine().replace(',', '.').trim());
+        amount = Double.parseDouble(in.nextLine().replace(',', '.').trim());
         if (amount < 0) throw new Exception("Amounts can't be negative");
         UserService.changeBalance(amount, add);
         showNotifications();
@@ -252,13 +262,10 @@ public class UserInterface {
     }
 
     private static void changeBalanceFromOtherCurrency(boolean add) throws Exception {
-        showCurrencies();
-        System.out.print("Enter the name of the currency you want the amount to be in: ");
-        String currency = in.nextLine().trim().toUpperCase();
-        if (!User.currentUser.getCurrencies().containsKey(currency)) throw new Exception("Invalid currency");
-        showBalance(false);
         String operation;
         String process;
+        String currency;
+        double amount;
         if (add) {
             operation = "add";
             process = "to";
@@ -266,8 +273,13 @@ public class UserInterface {
             operation = "remove";
             process = "from";
         }
+        showCurrencies();
+        System.out.print("Enter the name of the currency you want the amount to be in: ");
+        currency = in.nextLine().trim().toUpperCase();
+        if (!User.currentUser.getCurrencies().containsKey(currency)) throw new Exception("Invalid currency");
+        showBalance(false);
         System.out.print("Enter the amount you want to " + operation + ": ");
-        double amount = Double.parseDouble(in.nextLine().replace(',', '.').trim());
+        amount = Double.parseDouble(in.nextLine().replace(',', '.').trim());
         if (amount < 0) throw new Exception("The amount can't be negative");
         UserService.changeBalanceWithConversion(amount, currency, add);
         showNotifications();
@@ -278,18 +290,22 @@ public class UserInterface {
     }
 
     private static void makeReservation() throws Exception {
+        String name;
+        double amount;
+        byte choice;
         showDelimiter();
         System.out.print("Enter the name of the reservation: ");
-        String name = in.nextLine().trim();
+        name = in.nextLine().trim();
         System.out.print("Enter the amount you want to set for this reservation (will be removed from your balance): ");
-        double amount = Double.parseDouble(in.nextLine().replace(',', '.').trim());
+        amount = Double.parseDouble(in.nextLine().replace(',', '.').trim());
         if (amount > User.currentUser.getBalance())
             throw new Exception("You can't remove an amount grater than your balance");
         System.out.print("Enter 1 if you want to set a description for the reservation, or 0 if you don't: ");
-        byte choice = Byte.parseByte(in.nextLine().trim());
+        choice = Byte.parseByte(in.nextLine().trim());
         if (choice == 1) {
+            String description;
             System.out.print("Enter the description: ");
-            String description = in.nextLine().trim();
+            description = in.nextLine().trim();
             UserService.addReservation(name, amount, description);
         } else if (choice == 0) UserService.addReservation(name, amount);
         else throw new InvalidChoice();
@@ -300,11 +316,12 @@ public class UserInterface {
     }
 
     private static void removeReservation(boolean complete) throws Exception {
+        String prompt = "Successfully %s the reservation%n";
+        String name;
         showReservations(false);
         System.out.print("Enter the name of the reservation: ");
-        String name = in.nextLine().trim();
+        name = in.nextLine().trim();
         UserService.removeReservation(name, complete);
-        String prompt = "Successfully %s the reservation%n";
         showNotifications();
         if (complete) System.out.printf(prompt, "completed");
         else System.out.printf(prompt, "removed");
@@ -312,10 +329,12 @@ public class UserInterface {
     }
 
     private static void changeCurrency(boolean convert) throws Exception {
+        String currency;
         showCurrencies();
         System.out.print("Enter the name of the new currency: ");
-        String currency = in.nextLine().trim().toUpperCase();
-        if (!User.currentUser.getCurrencies().containsKey(currency)) throw new Exception("That is not a valid currency");
+        currency = in.nextLine().trim().toUpperCase();
+        if (!User.currentUser.getCurrencies().containsKey(currency))
+            throw new Exception("That is not a valid currency");
         UserService.changeCurrency(currency, convert);
         showNotifications();
         System.out.println("Currency changed successfully");
@@ -324,12 +343,14 @@ public class UserInterface {
     }
 
     private static void addCurrency() throws Exception {
+        String currency;
+        double conversionRate;
         showDelimiter();
         System.out.print("Enter the abbreviation of the new currency (Ex: USD): ");
-        String currency = in.nextLine().trim().toUpperCase();
+        currency = in.nextLine().trim().toUpperCase();
         if (currency.length() != 3) throw new Exception("Abbreviations must be 3 characters long");
         System.out.print("Enter the conversion rate based on USD ( how much USD is in 1 " + currency + "): ");
-        double conversionRate = Double.parseDouble(in.nextLine().replace(',', '.').trim());
+        conversionRate = Double.parseDouble(in.nextLine().replace(',', '.').trim());
         User.currentUser.addCurrency(currency, conversionRate);
         showNotifications();
         System.out.println("Currency added successfully");
@@ -337,18 +358,21 @@ public class UserInterface {
     }
 
     private static void removeCurrency() throws Exception {
-        if(User.currentUser.getCurrencies().size() == 0)
+        String currency;
+        if (User.currentUser.getCurrencies().size() == 0)
             throw new Exception("YOU MUST HAVE AT LEAST AN AVAILABLE CURRENCY!");
         showCurrencies();
         System.out.print("Enter the abbreviation of the currency: ");
-        String currency = in.nextLine().trim().toUpperCase();
+        currency = in.nextLine().trim().toUpperCase();
         if (!User.currentUser.getCurrencies().containsKey(currency))
             throw new Exception("The currency \"" + currency + "\" does not exist");
-        if(currency.equals(User.currentUser.getCurrency())){
+        if (currency.equals(User.currentUser.getCurrency())) {
+            String choice;
+            String newCurrency;
             showDelimiter();
             System.out.print("WARNING: The currency you chose to delete is your current currency, enter 0 to abort or anything else to change your currency ( the price won't be converted ): ");
-            String choice = in.nextLine().trim();
-            if(choice.equals("0")){
+            choice = in.nextLine().trim();
+            if (choice.equals("0")) {
                 showNotifications();
                 System.out.println("Removal aborted successfully");
                 showDelimiter();
@@ -356,8 +380,8 @@ public class UserInterface {
             }
             showCurrencies(currency);
             System.out.print("Enter the abbreviation of the new currency: ");
-            String newCurrency = in.nextLine().trim().toUpperCase();
-            if(newCurrency.equals(currency))
+            newCurrency = in.nextLine().trim().toUpperCase();
+            if (newCurrency.equals(currency))
                 throw new Exception("You can't pick your current currency as the new currency in this context");
             if (!User.currentUser.getCurrencies().containsKey(newCurrency))
                 throw new Exception("The currency \"" + newCurrency + "\" does not exist");
@@ -370,16 +394,20 @@ public class UserInterface {
     }
 
     private static void makeMilestone() throws Exception {
+        String name;
+        double amount;
+        byte choice;
         showDelimiter();
         System.out.print("Enter a name for the milestone: ");
-        String name = in.nextLine().trim();
+        name = in.nextLine().trim();
         System.out.print("Enter the milestone amount: ");
-        double amount = Double.parseDouble(in.nextLine().replace(',', '.').trim());
+        amount = Double.parseDouble(in.nextLine().replace(',', '.').trim());
         System.out.print("Enter 1 if you want to set a description or 0 if you don't: ");
-        byte choice = Byte.parseByte(in.nextLine().trim());
+        choice = Byte.parseByte(in.nextLine().trim());
         if (choice == 1) {
+            String description;
             System.out.print("Enter the description: ");
-            String description = in.nextLine().trim();
+            description = in.nextLine().trim();
             UserService.addMilestone(name, amount, description);
         } else if (choice == 0) UserService.addMilestone(name, amount);
         else throw new InvalidChoice();
@@ -389,21 +417,23 @@ public class UserInterface {
     }
 
     private static void removeMilestone(boolean complete) throws Exception {
+        String prompt = "Successfully %s the milestone%n";
+        String name;
         showMilestones(false);
         System.out.print("Enter the name of the milestone: ");
-        String name = in.nextLine().trim();
+        name = in.nextLine().trim();
         UserService.removeMilestone(name, complete);
         showNotifications();
-        String prompt = "Successfully %s the milestone%n";
         if (complete) System.out.printf(prompt, "completed");
         else System.out.printf(prompt, "removed");
         showDelimiter();
     }
 
     private static void deleteUser() throws Exception {
+        int id;
         showInformation(false);
         System.out.print("Enter your id to confirm: ");
-        int id = Integer.parseInt(in.nextLine().replace('#', ' ').trim());
+        id = Integer.parseInt(in.nextLine().replace('#', ' ').trim());
         if (id != User.currentUser.getId()) throw new Exception("Invalid id");
         UserService.deleteCurrentUser();
         showDelimiter();
