@@ -20,8 +20,8 @@ public class UserInterface {
         showDelimiter();
     }
 
-    private static void runConnectMenu(){
-        while(!closed){
+    private static void runConnectMenu() {
+        while (!closed) {
             try {
                 showConnectOptions();
                 break;
@@ -35,8 +35,8 @@ public class UserInterface {
         }
     }
 
-    public static void runUserMenu() throws Exception{
-        while(!closed){
+    public static void runUserMenu() throws Exception {
+        while (!closed) {
             try {
                 showDelimiter();
                 showUserMenu();
@@ -65,7 +65,7 @@ public class UserInterface {
             case 0 -> closed = true;
             case 1 -> logIn();
             case 2 -> signIn();
-            default -> throw new InvalidChoice();
+            default -> throw new Exception("Invalid choice");
         }
     }
 
@@ -124,7 +124,7 @@ public class UserInterface {
             case 22 -> removeCurrency();
             case 23 -> deleteUser();
             case 24 -> logOut();
-            default -> throw new InvalidChoice();
+            default -> throw new Exception("Invalid choice");
         }
     }
 
@@ -132,6 +132,7 @@ public class UserInterface {
         if (notifications) showNotifications();
         else showDelimiter();
         System.out.printf("Your balance is %,.2f %s%n", User.currentUser.getBalance(), User.currentUser.getCurrency());
+        showDelimiter();
     }
 
     private static void showInformation(boolean notifications) {
@@ -145,10 +146,7 @@ public class UserInterface {
         showDelimiter();
         for (String currency : User.currentUser.getCurrencies().keySet()) {
             if (!ignoredCurrencies.contains(currency)) {
-                System.out.print(currency);
-                if (!currency.equals("USD"))
-                    System.out.printf(": %,.2f USD", User.currentUser.getCurrencies().get(currency));
-                System.out.println();
+                System.out.printf("%s: %,.2f USD%n", currency, User.currentUser.getCurrencies().get(currency));
             }
         }
         showDelimiter();
@@ -156,7 +154,8 @@ public class UserInterface {
 
     private static void showBasicCurrencies() {
         showDelimiter();
-        System.out.println("USD\nGBP: 1.23 USD\nEUR: 1.03 USD\nRON: 0.21 USD");
+        for(String currency: User.basicCurrencies.keySet())
+            System.out.printf("%s: %,.2f USD%n", currency, User.basicCurrencies.get(currency));
         showDelimiter();
     }
 
@@ -187,7 +186,7 @@ public class UserInterface {
         if (notifications) showNotifications();
         else showDelimiter();
         for (User.Allocation milestone : User.currentUser.getMilestones()) {
-            double requiredAmount = UserService.getAmountRequiredToCompleteMilestone(milestone);
+            double requiredAmount = milestone.amount - User.currentUser.getBalance();
             if (requiredAmount > 0)
                 System.out.printf("Name: %s\nAmount: %,.2f %s (%,.2f %s required to complete)\nDescription: %s\nCreation date: %s%n", milestone.name, milestone.amount, User.currentUser.getCurrency(), requiredAmount, User.currentUser.getCurrency(), milestone.description, milestone.creationDate);
             else
@@ -246,7 +245,7 @@ public class UserInterface {
         showDelimiter();
         System.out.print("Enter a new username: ");
         newUsername = in.nextLine().trim();
-        UserService.changeUsername(newUsername);
+        User.currentUser.setUsername(newUsername);
         showNotifications();
         System.out.println("Username changed successfully");
     }
@@ -256,7 +255,7 @@ public class UserInterface {
         showDelimiter();
         System.out.print("Enter a new password: ");
         newPassword = in.nextLine().trim();
-        UserService.changePassword(newPassword);
+        User.currentUser.setPassword(newPassword);
         showNotifications();
         System.out.println("Password changed successfully");
     }
@@ -327,7 +326,7 @@ public class UserInterface {
             description = in.nextLine().trim();
             UserService.addReservation(name, amount, description);
         } else if (choice == 0) UserService.addReservation(name, amount);
-        else throw new InvalidChoice();
+        else throw new Exception("Invalid choice");
         showNotifications();
         System.out.println("Allocation added successfully");
     }
@@ -422,7 +421,7 @@ public class UserInterface {
             description = in.nextLine().trim();
             UserService.addMilestone(name, amount, description);
         } else if (choice == 0) UserService.addMilestone(name, amount);
-        else throw new InvalidChoice();
+        else throw new Exception("Invalid choice");
         showNotifications();
         System.out.println("Successfully added milestone");
     }
@@ -451,7 +450,7 @@ public class UserInterface {
         runConnectMenu();
     }
 
-    private static void logOut(){
+    private static void logOut() {
         UserService.updateCurrentUser();
         runConnectMenu();
     }
@@ -459,15 +458,8 @@ public class UserInterface {
     public static void run() throws Exception {
         UserService.loadUsers();
         showConnectOptions();
-        if(!closed)
+        if (!closed)
             runUserMenu();
-    }
-
-    private static class InvalidChoice extends Exception {
-        InvalidChoice() {
-            super("Invalid choice");
-        }
-
     }
 
 }

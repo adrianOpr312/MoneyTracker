@@ -6,18 +6,19 @@ import java.util.HashMap;
 
 class User implements Serializable {
 
+    static final HashMap<String, Double> basicCurrencies = new HashMap<>() {{
+        put("USD", 1.00);
+        put("GBP", 1.23);
+        put("EUR", 1.03);
+        put("RON", 0.21);
+    }};
     static User currentUser;
     private final ArrayList<Allocation> reservations = new ArrayList<>();
     private final HashMap<Allocation, String> completedReservations = new HashMap<>();
     private final ArrayList<Allocation> milestones = new ArrayList<>();
     private final HashMap<Allocation, String> completedMilestones = new HashMap<>();
     private final ArrayList<String> notifications = new ArrayList<>();
-    private final HashMap<String, Double> currencies = new HashMap<>() {{
-        put("USD", 1.00);
-        put("GBP", 1.23);
-        put("EUR", 1.03);
-        put("RON", 0.21);
-    }};
+    private final HashMap<String, Double> currencies = basicCurrencies;
     private String username;
     private String password;
     private int id;

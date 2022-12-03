@@ -60,7 +60,7 @@ public class UserService {
     private static String getNotification(String milestoneName) {
         for (String notification : User.currentUser.getNotifications())
             if (notification.contains(String.format("\"%s\"", milestoneName))) return notification;
-        return "";
+        return null;
     }
 
     private static boolean reservationExists(User.Allocation reservation) {
@@ -94,14 +94,6 @@ public class UserService {
         int index = findByUsernameAndPassword(username, password);
         if (index == -1) throw new Exception("Invalid username or password");
         User.currentUser = getUsers().get(index);
-    }
-
-    static void changeUsername(String newUsername) {
-        User.currentUser.setUsername(newUsername);
-    }
-
-    static void changePassword(String newPassword) {
-        User.currentUser.setPassword(newPassword);
     }
 
     static void changeBalance(double amount, boolean add) throws Exception {
@@ -172,10 +164,6 @@ public class UserService {
         milestone.description = description;
         milestone.creationDate = getDate();
         User.currentUser.addMilestone(milestone);
-    }
-
-    static double getAmountRequiredToCompleteMilestone(User.Allocation milestone) {
-        return milestone.amount - User.currentUser.getBalance();
     }
 
     static void removeMilestone(String name, boolean complete) throws Exception {
