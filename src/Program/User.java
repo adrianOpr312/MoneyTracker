@@ -155,11 +155,12 @@ class User implements Serializable {
     }
 
 
-    static class Allocation {
+    static class Allocation implements Serializable{
         String name;
         double amount;
         String description;
         String creationDate;
+        String lastEditedDate;
 
         Allocation(String name) {
             this.name = name;

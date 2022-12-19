@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 
 public class UserService {
@@ -140,6 +141,53 @@ public class UserService {
         User.currentUser.removeBalance(amount);
     }
 
+    private static void changeNameOfAllocation(String name, String newName, boolean isMilestone) {
+        if (isMilestone) {
+            for (User.Allocation milestone : User.currentUser.getMilestones())
+                if (Objects.equals(milestone, new User.Allocation(name))) {
+                    User.currentUser.getMilestones().get(User.currentUser.getMilestones().indexOf(milestone)).name = newName;
+                    User.currentUser.getMilestones().get(User.currentUser.getMilestones().indexOf(milestone)).lastEditedDate = getDate();
+                    return;
+                }
+        } else for (User.Allocation reservation : User.currentUser.getReservations())
+            if (Objects.equals(reservation, new User.Allocation(name))) {
+                User.currentUser.getReservations().get(User.currentUser.getReservations().indexOf(reservation)).name = newName;
+                User.currentUser.getMilestones().get(User.currentUser.getMilestones().indexOf(reservation)).lastEditedDate = getDate();
+                return;
+            }
+    }
+
+    private static void changePriceOfAllocation(String name, double newPrice, boolean isMilestone) throws Exception{
+        if (isMilestone) {
+            for (User.Allocation milestone : User.currentUser.getMilestones())
+                if (Objects.equals(milestone, new User.Allocation(name))) {
+                    User.currentUser.getMilestones().get(User.currentUser.getMilestones().indexOf(milestone)).amount = newPrice;
+                    User.currentUser.getMilestones().get(User.currentUser.getMilestones().indexOf(milestone)).lastEditedDate = getDate();
+                    return;
+                }
+        } else for (User.Allocation reservation : User.currentUser.getReservations())
+            if (Objects.equals(reservation, new User.Allocation(name))) {
+                if(newPrice > User.currentUser.getBalance() + reservation.amount)
+                    throw new Exception("You can't make the amount greater than your current balance");
+                User.currentUser.addBalance(reservation.amount - newPrice);
+                User.currentUser.getReservations().get(User.currentUser.getReservations().indexOf(reservation)).amount = newPrice;
+                User.currentUser.getReservations().get(User.currentUser.getReservations().indexOf(reservation)).lastEditedDate = getDate();
+                return;
+            }
+    }
+
+    static void changeAllocation(String name, Object change, boolean isMilestone) throws Exception {
+        User.Allocation reservation = User.currentUser.getReservations().get(User.currentUser.getReservations().indexOf(new User.Allocation(name)));
+        if (!reservationExists(reservation)) {
+            String allocation;
+            if (isMilestone) allocation = "milestone";
+            else allocation = "reservation";
+            throw new Exception("The " + allocation + " with the name " + name + " doesn't exist");
+        }
+        if (change instanceof Double) changePriceOfAllocation(name, (Double) change, isMilestone);
+        else changeNameOfAllocation(name, (String) change, isMilestone);
+
+    }
 
     static void removeReservation(String name, boolean complete) throws Exception {
         User.Allocation reservation = User.currentUser.getReservations().get(User.currentUser.getReservations().indexOf(new User.Allocation(name)));

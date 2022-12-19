@@ -32,9 +32,7 @@ public class FileRepository<T> extends Repository<T> implements GenericFileRepos
         FileOutputStream fos = new FileOutputStream(filePath);
         BufferedOutputStream bos = new BufferedOutputStream(fos);
         ObjectOutputStream oos = new ObjectOutputStream(bos);
-        for (T entity : entities) {
-            oos.writeObject(entity);
-        }
+        for (T entity : entities) oos.writeObject(entity);
         oos.writeObject(null);
         oos.close();
     }

@@ -80,21 +80,25 @@ public class UserInterface {
         System.out.println("7 -> Add money to your balance from another currency");
         System.out.println("8 -> Remove money from your balance from another currency");
         System.out.println("9 -> Add a milestone");
-        System.out.println("10 -> Complete a milestone");
-        System.out.println("11 -> Remove a milestone");
-        System.out.println("12 -> Show milestones");
-        System.out.println("13 -> Show completed milestones");
-        System.out.println("14 -> Add a reservation");
-        System.out.println("15 -> Complete a reservation");
-        System.out.println("16 -> Remove a reservation");
-        System.out.println("17 -> Show reservations");
-        System.out.println("18 -> Show completed reservations");
-        System.out.println("19 -> Change the currency (don't convert)");
-        System.out.println("20 -> Change the currency (convert)");
-        System.out.println("21 -> Add a new currency");
-        System.out.println("22 -> Remove a currency");
-        System.out.println("23 -> Delete account");
-        System.out.println("24 -> Log out");
+        System.out.println("10 -> Change the name of a milestone");
+        System.out.println("11 -> Change the target price of a milestone");
+        System.out.println("12 -> Complete a milestone");
+        System.out.println("13 -> Remove a milestone");
+        System.out.println("14 -> Show milestones");
+        System.out.println("15 -> Show completed milestones");
+        System.out.println("16 -> Add a reservation");
+        System.out.println("17 -> Change the name of a reservation");
+        System.out.println("18 -> Change the amount of a reservation");
+        System.out.println("19 -> Complete a reservation");
+        System.out.println("20 -> Remove a reservation");
+        System.out.println("21 -> Show reservations");
+        System.out.println("22 -> Show completed reservations");
+        System.out.println("23 -> Change the currency (don't convert)");
+        System.out.println("24 -> Change the currency (convert)");
+        System.out.println("25 -> Add a new currency");
+        System.out.println("26 -> Remove a currency");
+        System.out.println("27 -> Delete account");
+        System.out.println("28 -> Log out");
         System.out.println("0 -> Exit");
         System.out.print("\nYour choice -> ");
         choice = Byte.parseByte(in.nextLine().trim());
@@ -109,21 +113,25 @@ public class UserInterface {
             case 7 -> changeBalanceFromOtherCurrency(true);
             case 8 -> changeBalanceFromOtherCurrency(false);
             case 9 -> makeMilestone();
-            case 10 -> removeMilestone(true);
-            case 11 -> removeMilestone(false);
-            case 12 -> showMilestones(true);
-            case 13 -> showCompletedMilestones();
-            case 14 -> makeReservation();
-            case 15 -> removeReservation(true);
-            case 16 -> removeReservation(false);
-            case 17 -> showReservations(true);
-            case 18 -> showCompletedReservations();
-            case 19 -> changeCurrency(false);
-            case 20 -> changeCurrency(true);
-            case 21 -> addCurrency();
-            case 22 -> removeCurrency();
-            case 23 -> deleteUser();
-            case 24 -> logOut();
+            case 10 -> changeNameForAllocation(true);
+            case 11 -> changePriceForAllocation(true);
+            case 12 -> removeMilestone(true);
+            case 13 -> removeMilestone(false);
+            case 14 -> showMilestones(true);
+            case 15 -> showCompletedMilestones();
+            case 16 -> makeReservation();
+            case 17 -> changeNameForAllocation(false);
+            case 18 -> changePriceForAllocation(false);
+            case 19 -> removeReservation(true);
+            case 20 -> removeReservation(false);
+            case 21 -> showReservations(true);
+            case 22 -> showCompletedReservations();
+            case 23 -> changeCurrency(false);
+            case 24 -> changeCurrency(true);
+            case 25 -> addCurrency();
+            case 26 -> removeCurrency();
+            case 27 -> deleteUser();
+            case 28 -> logOut();
             default -> throw new Exception("Invalid choice");
         }
     }
@@ -154,7 +162,7 @@ public class UserInterface {
 
     private static void showBasicCurrencies() {
         showDelimiter();
-        for(String currency: User.basicCurrencies.keySet())
+        for (String currency : User.basicCurrencies.keySet())
             System.out.printf("%s: %,.2f USD%n", currency, User.basicCurrencies.get(currency));
         showDelimiter();
     }
@@ -164,7 +172,10 @@ public class UserInterface {
         if (notifications) showNotifications();
         else showDelimiter();
         for (User.Allocation reservation : User.currentUser.getReservations()) {
-            System.out.printf("Name: %s\nAmount: %,.2f %s\nDescription: %s\nCreation date: %s%n", reservation.name, reservation.amount, User.currentUser.getCurrency(), reservation.description, reservation.creationDate);
+            String lastEdited;
+            if (reservation.lastEditedDate == null) lastEdited = "";
+            else lastEdited = "Last edited on: " + reservation.lastEditedDate;
+            System.out.printf("Name: %s\nAmount: %,.2f %s\nDescription: %s\nCreation date: %s\n%s%n", reservation.name, reservation.amount, User.currentUser.getCurrency(), reservation.description, reservation.creationDate, lastEdited);
             if (User.currentUser.getReservations().indexOf(reservation) != User.currentUser.getReservations().size() - 1)
                 System.out.println();
         }
@@ -424,6 +435,37 @@ public class UserInterface {
         else throw new Exception("Invalid choice");
         showNotifications();
         System.out.println("Successfully added milestone");
+    }
+
+    private static void changeNameForAllocation(boolean isMilestone) throws Exception {
+        String prompt = "Successfully changed the name of the %s%n", allocation, name, newName;
+        if (isMilestone) allocation = "milestone";
+        else allocation = "reservation";
+        if (isMilestone) showMilestones(false);
+        else showReservations(false);
+        System.out.println("Enter the name of the " + allocation);
+        name = in.nextLine().strip();
+        System.out.println("Enter a new name for the " + allocation);
+        newName = in.nextLine().trim();
+        UserService.changeAllocation(name, newName, isMilestone);
+        showNotifications();
+        System.out.printf(prompt, allocation);
+    }
+
+    private static void changePriceForAllocation(boolean isMilestone) throws Exception {
+        String prompt = "Successfully changed the price of the %s%n", allocation, name;
+        double newPrice;
+        if (isMilestone) allocation = "milestone";
+        else allocation = "reservation";
+        if (isMilestone) showMilestones(false);
+        else showReservations(false);
+        System.out.println("Enter the name of the " + allocation);
+        name = in.nextLine().strip();
+        System.out.println("Enter a new price for the " + allocation);
+        newPrice = Double.parseDouble(in.nextLine().replace(',', '.').trim());
+        UserService.changeAllocation(name, newPrice, isMilestone);
+        showNotifications();
+        System.out.printf(prompt, allocation);
     }
 
     private static void removeMilestone(boolean complete) throws Exception {
