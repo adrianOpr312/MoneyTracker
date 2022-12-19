@@ -36,4 +36,4 @@
 ## Log interface:
 ![log_preview](interfacePreviews/LogScreen.png)
 ## User interface:
-![user_preview](interfacePreviews/UserScreen.png) 
+
